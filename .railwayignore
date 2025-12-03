@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.backup
+storage/*.key
+.phpunit.result.cache
+.idea/
+public/hot
