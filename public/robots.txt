@@ -1,0 +1,69 @@
+# ISS-LOOPS Robots.txt
+# Revista de Divulgación Científica Bilingüe
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: http://localhost:8000/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /filament
+Disallow: /filament/*
+
+# Disallow authentication pages
+Disallow: /login
+Disallow: /register
+Disallow: /password/reset
+Disallow: /password/
+Disallow: /email/verify
+
+# Disallow user areas
+Disallow: /favoritos
+Disallow: /favorites
+Disallow: /profile
+Disallow: /dashboard
+
+# Allow all public content
+Allow: /es/
+Allow: /en/
+Allow: /articulos/
+Allow: /articles/
+Allow: /categorias/
+Allow: /categories/
+Allow: /entrevistas/
+Allow: /interviews/
+Allow: /games/
+Allow: /festival/
+Allow: /nosotros
+Allow: /contacto
+Allow: /about
+Allow: /contact
+
+# Allow CSS, JS, and images
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /storage/
+Allow: /build/
+
+# Crawl-delay (optional, for slower crawling)
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
