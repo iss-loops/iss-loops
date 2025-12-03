@@ -1,0 +1,14 @@
+node_modules
+.env
+.env.backup
+storage/*.key
+.phpunit.result.cache
+.idea
+vendor
+public/hot
+public/storage
+bootstrap/cache/*
+.git
+.gitignore
+.gitattributes
+README.md
