@@ -1,7 +1,7 @@
-# Usar FrankenPHP con PHP 8.2 (oficial de Laravel)
+# Usar FrankenPHP con PHP 8.2
 FROM dunglas/frankenphp:php8.2-bookworm
 
-# Instalar extensiones PHP requeridas por Filament y Laravel
+# Instalar extensiones PHP requeridas
 RUN install-php-extensions \
     intl \
     zip \
@@ -12,32 +12,43 @@ RUN install-php-extensions \
     exif \
     bcmath
 
-# Instalar Node.js 20 para compilar assets
+# ===== INSTALAR COMPOSER =====
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Instalar Node.js 20
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
 # Configurar directorio de trabajo
 WORKDIR /app
 
-# Copiar composer files primero (para aprovechar cache de Docker)
+# Copiar composer files primero
 COPY composer.json composer.lock ./
 
-# Instalar dependencias de Composer
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Instalar dependencias PHP (sin plugins para evitar warnings)
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-scripts \
+    --no-plugins
 
 # Copiar package files
 COPY package.json package-lock.json ./
 
-# Instalar dependencias de npm
+# Instalar dependencias npm
 RUN npm ci
 
-# Copiar el resto de la aplicación
+# Copiar resto de la aplicación
 COPY . .
 
-# Build de assets con Vite
+# Post-autoload scripts de Composer (ahora que tenemos todos los archivos)
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize
+
+# Build assets con Vite
 RUN npm run build
 
-# Eliminar node_modules para reducir tamaño
+# Limpiar node_modules para reducir tamaño
 RUN rm -rf node_modules
 
 # Crear directorios y permisos
@@ -45,10 +56,10 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs boots
     chmod -R 775 storage bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache
 
-# Exponer puerto (Railway usa variable $PORT)
+# Exponer puerto
 EXPOSE 8000
 
-# Script de inicio
+# Comando de inicio
 CMD php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
