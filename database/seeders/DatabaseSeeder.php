@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -12,12 +11,16 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminUserSeeder::class,
             CategorySeeder::class,
-            FestivalWinnerSeeder::class, // ← Agregar esta línea
-
+            ArticleSeeder::class,          // ✅ AGREGADO
+            FestivalWinnerSeeder::class,
+            FunFactSeeder::class,          // ✅ AGREGADO (si existe)
+            GameSeeder::class,             // ✅ AGREGADO (si existe)
         ]);
 
         // Asignar rol admin al primer usuario
         $admin = \App\Models\User::first();
-        $admin->assignRole('admin');
+        if ($admin) {
+            $admin->assignRole('admin');
+        }
     }
 }
