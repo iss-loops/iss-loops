@@ -47,12 +47,16 @@ jobs:
       
       - name: Commit deletion
         run: |
-          git commit -m "Remove all files from R-=-MVP branch
+          COMMIT_MSG=$(cat <<'EOF'
+Remove all files from R-=-MVP branch
 
 This commit removes all tracked files from the R-=-MVP branch as requested.
 
 Triggered by: ${{ github.actor }}
-Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+EOF
+)
+          git commit -m "$COMMIT_MSG"
           
           echo ""
           echo "📝 Commit created successfully"
