@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v12.10.0...12.x)
+## [Unreleased](https://github.com/laravel/laravel/compare/RESPALDO...main)
+
+## [RESPALDO](https://github.com/laravel/laravel/compare/v12.10.0...RESPALDO) - 2025-12-06
 
 ## [v12.10.0](https://github.com/laravel/laravel/compare/v12.9.1...v12.10.0) - 2025-11-04
 
