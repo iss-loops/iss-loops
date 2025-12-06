@@ -43,19 +43,34 @@ Parent: 871990a (RESPALDO tag)
 
 Due to authentication constraints in the current environment, the local changes need to be pushed to the remote `R-=-MVP` branch. This can be accomplished by:
 
-### Option 1: Manual Push (Recommended)
-A user with appropriate repository permissions should execute:
+### Option 1: GitHub Actions Workflow (RECOMMENDED)
+The easiest and safest method is to use the automated workflow:
+
+1. Navigate to: `https://github.com/iss-loops/iss-loops/actions/workflows/delete-mvp-files.yml`
+2. Click "Run workflow"
+3. Type `DELETE` in the confirmation field
+4. Click "Run workflow" button
+
+The workflow will automatically:
+- Check out the R-=-MVP branch
+- Remove all files
+- Commit the changes
+- Push to the remote branch
+- Provide verification instructions
+
+### Option 2: Manual Push
+A user with appropriate repository permissions can execute:
 ```bash
 git fetch origin
 git push origin 7ec484d:R-=-MVP --force
 ```
 
-### Option 2: Using GitHub Web Interface
+### Option 3: Using GitHub Web Interface
 1. Navigate to the repository on GitHub
 2. Go to the `R-=-MVP` branch
 3. Delete all files manually through the web interface
 
-### Option 3: Delete and Recreate Branch
+### Option 4: Delete and Recreate Branch
 1. Delete the `R-=-MVP` branch from GitHub
 2. Create a new empty `R-=-MVP` branch
 

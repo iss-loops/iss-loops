@@ -1,0 +1,84 @@
+name: Delete All Files from R-=-MVP Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DELETE" to confirm you want to remove all files from R-=-MVP branch'
+        required: true
+        type: string
+
+jobs:
+  delete-files:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Validate confirmation
+        if: inputs.confirm != 'DELETE'
+        run: |
+          echo "❌ Confirmation failed. You must type 'DELETE' to proceed."
+          exit 1
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: R-=-MVP
+          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Remove all files
+        run: |
+          echo "📋 Current files in R-=-MVP branch:"
+          git ls-files
+          
+          FILE_COUNT=$(git ls-files | wc -l)
+          echo ""
+          echo "⚠️  About to delete $FILE_COUNT files from R-=-MVP branch"
+          
+          # Remove all tracked files
+          git rm -rf .
+          
+          echo ""
+          echo "✅ All files have been staged for deletion"
+      
+      - name: Commit deletion
+        run: |
+          git commit -m "Remove all files from R-=-MVP branch
+
+This commit removes all tracked files from the R-=-MVP branch as requested.
+
+Triggered by: ${{ github.actor }}
+Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          echo ""
+          echo "📝 Commit created successfully"
+          git log -1 --stat
+      
+      - name: Push changes
+        run: |
+          echo "🚀 Pushing changes to R-=-MVP branch..."
+          git push origin R-=-MVP
+          
+          echo ""
+          echo "✅ Successfully deleted all files from R-=-MVP branch!"
+          echo ""
+          echo "To verify, run: git ls-tree -r R-=-MVP"
+      
+      - name: Summary
+        if: success()
+        run: |
+          echo "## ✅ Deletion Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All files have been successfully removed from the \`R-=-MVP\` branch." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Verification" >> $GITHUB_STEP_SUMMARY
+          echo "Run the following command to verify:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "git ls-tree -r R-=-MVP" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This should return no output, confirming the branch is empty." >> $GITHUB_STEP_SUMMARY
