@@ -9,8 +9,7 @@ class LocaleHelper
     /**
      * Generate a localized URL
      */
-    public static function route(string $name, array $parameters = [], string $locale = null): string
-    {
+    public static function route(string $name, ?string $locale = null, array $parameters = []): string    {
         $locale = $locale ?? App::getLocale();
         
         // Si estamos ocultando el idioma por defecto en URL
